@@ -26,6 +26,6 @@ def upload(f, fs, channel, access):
             ), # What would happen if this were removed?
         )
     except Exception as err:
-        print(err)
+        print("Error is: ", err)
         fs.delete(fid) # What would happen if we did not delete the file?
         return "internal server error", 500

@@ -8,14 +8,16 @@ from bson.objectid import ObjectId
 
 server = Flask(__name__)
 
+uri_path = "mongodb://mongodb-service:27017"
+
 mongo_video = PyMongo(
     server,
-    uri="mongodb://host.minikube.internal:27017/videos"
+    uri=uri_path+"/videos"
 )
 
 mongo_mp3 = PyMongo(
     server,
-    uri="mongodb://host.minikube.internal:27017/mp3s"
+    uri=uri_path+"/mp3s"
 )
 
 fs_videos = gridfs.GridFS(mongo_video.db)
@@ -38,15 +40,17 @@ def login():
 @server.route("/upload", methods=["POST"])
 def upload():
     print("Entering upload function.")
+    print("Second print statement for no real reason...")
+    print("URI path is: " + uri_path)
     access, err = validate.token(request)
 
     if err:
         print("The error in the upload function is: " + err[0] + " " + str(err[1]))
         return err
 
-    print("Access before JSON loading: " + access)
+    #print("Access before JSON loading: " + access)
     access = json.loads(access)
-    print("Access after JSON loading: " + access)
+    #print("Access after JSON loading: " + access)
 
     if access["admin"]:
         print("Authorized")

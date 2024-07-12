@@ -21,6 +21,9 @@ spec:
       containers:
         - name: gateway
           image: ksantone/gateway
+          env:
+            - name: MONGO_URI
+              value: "mongodb://mongodb-service:27017"
           envFrom:
             - configMapRef:
                 name: gateway-configmap

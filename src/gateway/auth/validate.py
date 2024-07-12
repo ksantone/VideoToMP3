@@ -10,10 +10,19 @@ def token(request):
     if not token:
         return None, ("missing credentials", 401)
 
-    response = requests.post(
-        f"http://{os.environ.get('AUTH_SVC_ADDRESS')}/validate",
-        headers={"Authorization": token}
-    )
+    auth_svc_address = os.environ.get('AUTH_SVC_ADDRESS')
+    print(f"AUTH_SVC_ADDRESS: {auth_svc_address}")
+    print(f"Token: {token}")
+
+    try:
+        response = requests.post(
+            f"http://{auth_svc_address}/validate",
+            headers={"Authorization": token}
+        )
+        print("Response in token function is: ", str(response))
+    except Exception as e:
+        print("Exception in token function: ", str(e))
+        return None, ("internal server error", 500)
 
     print("Response in token function is: ", str(response))
 
